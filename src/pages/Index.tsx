@@ -230,7 +230,10 @@ const Index = () => {
       <footer className="relative z-10 border-t border-border/30 mt-16">
         <div className="container max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <span className="text-[10px] font-mono text-muted-foreground/40">
-            Built with semantic intelligence
+            Built by{' '}
+            <Link to="/about" className="text-primary/60 hover:text-primary transition-colors">
+              Nisha Goswami
+            </Link>
           </span>
           <div className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground/40">
             <div className="w-1 h-1 rounded-full bg-score-excellent/50" />
