@@ -136,7 +136,7 @@ export default {
   					opacity: '1'
   				}
   			},
-  			'float': {
+  			float: {
   				'0%, 100%': {
   					transform: 'translateY(0px)'
   				},
@@ -144,7 +144,7 @@ export default {
   					transform: 'translateY(-6px)'
   				}
   			},
-  			'shimmer': {
+  			shimmer: {
   				'0%': {
   					backgroundPosition: '-200% 0'
   				},
@@ -177,8 +177,8 @@ export default {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-  			'float': 'float 6s ease-in-out infinite',
-  			'shimmer': 'shimmer 3s ease-in-out infinite',
+  			float: 'float 6s ease-in-out infinite',
+  			shimmer: 'shimmer 3s ease-in-out infinite',
   			'fade-in': 'fade-in 0.5s ease-out forwards',
   			'scale-in': 'scale-in 0.3s ease-out forwards'
   		},
