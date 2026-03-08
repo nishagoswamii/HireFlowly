@@ -23,6 +23,16 @@ const fadeUp = {
 export function AnalysisResults({ result }: AnalysisResultsProps) {
   return (
     <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-5">
+      {/* Export Button */}
+      <motion.div variants={fadeUp} className="flex justify-end">
+        <button
+          onClick={() => exportAnalysisPDF(result)}
+          className="group flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary/10 border border-primary/20 text-primary text-xs font-display font-semibold hover:bg-primary/20 hover:border-primary/30 transition-all duration-300"
+        >
+          <Download className="w-3.5 h-3.5 transition-transform group-hover:-translate-y-0.5" />
+          Export PDF Report
+        </button>
+      </motion.div>
       {/* Semantic Match */}
       <motion.div variants={fadeUp}>
         <Section title="Semantic JD Match" icon={<Target className="w-4 h-4 text-primary" />} score={result.semanticMatch.score}>
