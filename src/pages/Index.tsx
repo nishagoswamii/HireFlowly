@@ -68,7 +68,7 @@ const Index = () => {
             </motion.div>
             <div>
               <h1 className="text-lg font-display font-bold text-foreground tracking-tight">
-                Resume<span className="text-gradient">RAG</span>
+                Hire<span className="text-gradient">Flow</span>
               </h1>
               <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-[0.25em]">
                 Semantic Resume Intelligence
