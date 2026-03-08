@@ -245,7 +245,7 @@
   }
 
   .text-gradient-subtle {
-    background: linear-gradient(135deg, hsl(210 30% 95%), hsl(210 20% 75%));
+    background: linear-gradient(135deg, hsl(0 0% 100%), hsl(260 30% 85%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
