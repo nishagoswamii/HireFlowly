@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ScoreRing } from './ScoreRing';
+import { Activity, TrendingUp, TrendingDown } from 'lucide-react';
 import type { AnalysisResult } from '@/lib/analysis-api';
 
 interface ScoreSidebarProps {
@@ -10,27 +11,39 @@ interface ScoreSidebarProps {
 export function ScoreSidebar({ result, isAnalyzing }: ScoreSidebarProps) {
   if (!result && !isAnalyzing) {
     return (
-      <div className="glass-panel rounded-lg p-6 h-full flex flex-col items-center justify-center text-center">
-        <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mb-4">
-          <span className="font-mono text-2xl text-muted-foreground">?</span>
+      <div className="glass-panel rounded-2xl p-8 h-80 flex flex-col items-center justify-center text-center">
+        <div className="w-14 h-14 rounded-2xl bg-secondary/60 flex items-center justify-center mb-5">
+          <Activity className="w-6 h-6 text-muted-foreground/30" />
         </div>
-        <p className="text-sm text-muted-foreground">Upload a resume and paste a JD to begin analysis</p>
+        <p className="text-xs text-muted-foreground/50 leading-relaxed max-w-[200px]">
+          Upload a resume and paste a JD to begin analysis
+        </p>
       </div>
     );
   }
 
   if (isAnalyzing) {
     return (
-      <div className="glass-panel rounded-lg p-6 h-full flex flex-col items-center justify-center">
-        <div className="relative w-16 h-16 mb-4">
-          <div className="absolute inset-0 rounded-full border-2 border-primary/30" />
+      <div className="glass-panel-glow rounded-2xl p-8 h-80 flex flex-col items-center justify-center">
+        <div className="relative w-16 h-16 mb-5">
+          <div className="absolute inset-0 rounded-full border-2 border-primary/10" />
           <motion.div
             className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary"
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
           />
+          <motion.div
+            className="absolute inset-2 rounded-full border border-transparent border-b-primary/40"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+          />
         </div>
-        <p className="text-sm font-mono text-primary animate-pulse-glow">ANALYZING...</p>
+        <p className="text-xs font-mono text-primary animate-pulse-glow tracking-widest">
+          ANALYZING
+        </p>
+        <p className="text-[10px] text-muted-foreground/40 mt-2 font-mono">
+          Processing semantic signals...
+        </p>
       </div>
     );
   }
@@ -41,46 +54,50 @@ export function ScoreSidebar({ result, isAnalyzing }: ScoreSidebarProps) {
     <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="glass-panel rounded-lg p-6 space-y-6"
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="glass-panel-glow rounded-2xl p-6 space-y-6"
     >
-      <div className="text-center">
-        <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-3">
-          Overall Score
+      {/* Overall */}
+      <div className="text-center pb-1">
+        <p className="section-label mb-4">Overall Score</p>
+        <ScoreRing score={result.overallScore} label="" size={110} />
+        <p className="text-[11px] text-muted-foreground/50 mt-3 font-mono">
+          {result.overallScore >= 80 ? 'Excellent' : result.overallScore >= 60 ? 'Good' : result.overallScore >= 40 ? 'Needs Work' : 'Weak'}
         </p>
-        <ScoreRing score={result.overallScore} label="" size={100} />
       </div>
 
-      <div className="h-px bg-border" />
+      <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-      <div className="grid grid-cols-3 gap-2">
-        <ScoreRing score={result.semanticMatch.score} label="Match" size={60} />
-        <ScoreRing score={result.xyzScorer.score} label="Impact" size={60} />
-        <ScoreRing score={result.buzzwordRedliner.score} label="Auth" size={60} />
+      {/* Sub scores */}
+      <div className="grid grid-cols-3 gap-1">
+        <ScoreRing score={result.semanticMatch.score} label="Match" size={64} />
+        <ScoreRing score={result.xyzScorer.score} label="Impact" size={64} />
+        <ScoreRing score={result.buzzwordRedliner.score} label="Auth" size={64} />
       </div>
 
-      <div className="h-px bg-border" />
+      <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
+      {/* Quick Stats */}
       <div className="space-y-3">
-        <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-          Quick Stats
-        </p>
-        <div className="space-y-2">
-          <StatRow label="Skills Matched" value={`${result.semanticMatch.matchedSkills.length}`} />
-          <StatRow label="Skills Missing" value={`${result.semanticMatch.missingSkills.length}`} variant="warning" />
-          <StatRow label="Strong Bullets" value={`${result.xyzScorer.strongBullets}`} />
-          <StatRow label="Weak Bullets" value={`${result.xyzScorer.weakBullets}`} variant="warning" />
-          <StatRow label="Buzzwords Found" value={`${result.buzzwordRedliner.flaggedWords.length}`} variant="warning" />
+        <p className="section-label">Quick Stats</p>
+        <div className="space-y-2.5">
+          <StatRow icon={<TrendingUp className="w-3 h-3 text-score-excellent" />} label="Skills Matched" value={result.semanticMatch.matchedSkills.length} />
+          <StatRow icon={<TrendingDown className="w-3 h-3 text-score-poor" />} label="Skills Missing" value={result.semanticMatch.missingSkills.length} variant="warning" />
+          <StatRow icon={<TrendingUp className="w-3 h-3 text-score-excellent" />} label="Strong Bullets" value={result.xyzScorer.strongBullets} />
+          <StatRow icon={<TrendingDown className="w-3 h-3 text-score-warning" />} label="Weak Bullets" value={result.xyzScorer.weakBullets} variant="warning" />
+          <StatRow icon={<TrendingDown className="w-3 h-3 text-score-warning" />} label="Buzzwords" value={result.buzzwordRedliner.flaggedWords.length} variant="warning" />
         </div>
       </div>
     </motion.div>
   );
 }
 
-function StatRow({ label, value, variant }: { label: string; value: string; variant?: 'warning' }) {
+function StatRow({ icon, label, value, variant }: { icon: React.ReactNode; label: string; value: number; variant?: 'warning' }) {
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-xs text-muted-foreground">{label}</span>
-      <span className={`text-xs font-mono font-semibold ${variant === 'warning' ? 'text-score-warning' : 'text-foreground'}`}>
+    <div className="flex items-center gap-2.5 group">
+      {icon}
+      <span className="text-[11px] text-muted-foreground/60 flex-1">{label}</span>
+      <span className={`text-[11px] font-mono font-bold ${variant === 'warning' ? 'text-score-warning' : 'text-foreground/80'}`}>
         {value}
       </span>
     </div>
