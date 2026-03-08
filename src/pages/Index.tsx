@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Terminal, Sparkles, ArrowRight, Clock, LogOut, LogIn } from 'lucide-react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ResumeUploader } from '@/components/ResumeUploader';
