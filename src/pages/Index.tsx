@@ -17,6 +17,7 @@ const Index = () => {
   const [jdText, setJdText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const { user, signOut } = useAuth();
   const { toast } = useToast();
 
   const handleAnalyze = async () => {
