@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
-import { CheckCircle, XCircle, Lightbulb, MessageSquare, Target, BarChart3, Shield, HelpCircle } from 'lucide-react';
+import { CheckCircle, XCircle, Lightbulb, MessageSquare, Target, BarChart3, Shield, HelpCircle, Download } from 'lucide-react';
 import type { AnalysisResult } from '@/lib/analysis-api';
+import { exportAnalysisPDF } from '@/lib/pdf-export';
 
 interface AnalysisResultsProps {
   result: AnalysisResult;
