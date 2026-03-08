@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Terminal, Sparkles, ArrowRight } from 'lucide-react';
+import { Zap, Terminal, Sparkles, ArrowRight, Clock, LogOut, LogIn } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ResumeUploader } from '@/components/ResumeUploader';
 import { JdInput } from '@/components/JdInput';
 import { ScoreSidebar } from '@/components/ScoreSidebar';
 import { AnalysisResults } from '@/components/AnalysisResults';
 import { analyzeResume, type AnalysisResult } from '@/lib/analysis-api';
+import { saveAnalysis } from '@/lib/save-analysis';
+import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
@@ -14,6 +17,7 @@ const Index = () => {
   const [jdText, setJdText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const { user, signOut } = useAuth();
   const { toast } = useToast();
 
   const handleAnalyze = async () => {
@@ -32,6 +36,7 @@ const Index = () => {
     try {
       const data = await analyzeResume({ resumeText, jobDescription: jdText });
       setResult(data);
+      await saveAnalysis(resumeText, jdText, data);
     } catch (err) {
       console.error(err);
       toast({
@@ -75,11 +80,37 @@ const Index = () => {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            {user && (
+              <Link
+                to="/history"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-[10px] font-mono text-primary/80 hover:bg-primary/10 transition-colors"
+              >
+                <Clock className="w-3 h-3" />
+                History
+              </Link>
+            )}
             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/10">
               <div className="w-1.5 h-1.5 rounded-full bg-score-excellent animate-pulse-glow" />
               <span className="text-[10px] font-mono text-primary/80">AI-Powered</span>
             </div>
+            {user ? (
+              <button
+                onClick={signOut}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/60 border border-border/40 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <LogOut className="w-3 h-3" />
+                Sign Out
+              </button>
+            ) : (
+              <Link
+                to="/auth"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-mono text-primary hover:bg-primary/20 transition-colors"
+              >
+                <LogIn className="w-3 h-3" />
+                Sign In
+              </Link>
+            )}
             <span className="text-[10px] font-mono text-muted-foreground/50">v1.0</span>
           </div>
         </div>
