@@ -109,7 +109,7 @@ export default function History() {
                   className="premium-card rounded-2xl p-5 flex items-center gap-5 group"
                 >
                   <div className="shrink-0">
-                    <ScoreRing score={a.overall_score} size={56} strokeWidth={4} />
+                    <ScoreRing score={a.overall_score} size={56} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-foreground/80 font-medium truncate">
