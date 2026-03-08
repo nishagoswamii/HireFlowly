@@ -112,6 +112,7 @@ const Index = () => {
                 Sign In
               </Link>
             )}
+            <ThemeToggle />
             <span className="text-[10px] font-mono text-muted-foreground/50">v1.0</span>
           </div>
         </div>
