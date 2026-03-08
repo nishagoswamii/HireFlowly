@@ -36,6 +36,7 @@ const Index = () => {
     try {
       const data = await analyzeResume({ resumeText, jobDescription: jdText });
       setResult(data);
+      await saveAnalysis(resumeText, jdText, data);
     } catch (err) {
       console.error(err);
       toast({
