@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Terminal, Sparkles, ArrowRight } from 'lucide-react';
+import { Zap, Terminal, Sparkles, ArrowRight, Clock, LogOut, LogIn } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ResumeUploader } from '@/components/ResumeUploader';
 import { JdInput } from '@/components/JdInput';
 import { ScoreSidebar } from '@/components/ScoreSidebar';
 import { AnalysisResults } from '@/components/AnalysisResults';
 import { analyzeResume, type AnalysisResult } from '@/lib/analysis-api';
+import { saveAnalysis } from '@/lib/save-analysis';
+import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
