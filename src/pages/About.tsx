@@ -10,6 +10,7 @@ const developer = {
     { label: 'GitHub', url: 'https://github.com/nishagoswamii', icon: Github },
     { label: 'LinkedIn', url: 'https://www.linkedin.com/in/nishagoswamii', icon: Linkedin },
     { label: 'Portfolio', url: 'https://nishagoswami.com', icon: Globe },
+    { label: 'Email', url: 'mailto:nnishagoswamii@gmail.com', icon: Mail },
   ],
 };
 
