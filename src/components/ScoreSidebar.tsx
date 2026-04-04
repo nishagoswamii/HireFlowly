@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { ScoreRing } from './ScoreRing';
+import { ConfidenceBand } from './ConfidenceBand';
 import { Activity, TrendingUp, TrendingDown } from 'lucide-react';
-import type { AnalysisResult } from '@/lib/analysis-api';
+import type { EnhancedAnalysisResult } from '@/lib/analysis-api';
 
 interface ScoreSidebarProps {
-  result: AnalysisResult | null;
+  result: EnhancedAnalysisResult | null;
   isAnalyzing: boolean;
 }
 
@@ -76,6 +77,37 @@ export function ScoreSidebar({ result, isAnalyzing }: ScoreSidebarProps) {
       </div>
 
       <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+      {/* Confidence Bands */}
+      {result.confidenceBands && (
+        <div className="space-y-2">
+          <p className="section-label">Confidence</p>
+          <div className="space-y-2">
+            {result.confidenceBands.semanticMatch && (
+              <ConfidenceBand
+                score={result.confidenceBands.semanticMatch.score}
+                confidence={result.confidenceBands.semanticMatch.confidence}
+                reasoning={result.confidenceBands.semanticMatch.reasoning}
+              />
+            )}
+            {result.confidenceBands.xyzScorer && (
+              <ConfidenceBand
+                score={result.confidenceBands.xyzScorer.score}
+                confidence={result.confidenceBands.xyzScorer.confidence}
+                reasoning={result.confidenceBands.xyzScorer.reasoning}
+              />
+            )}
+            {result.confidenceBands.buzzwordRedliner && (
+              <ConfidenceBand
+                score={result.confidenceBands.buzzwordRedliner.score}
+                confidence={result.confidenceBands.buzzwordRedliner.confidence}
+                reasoning={result.confidenceBands.buzzwordRedliner.reasoning}
+              />
+            )}
+          </div>
+          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+        </div>
+      )}
 
       {/* Quick Stats */}
       <div className="space-y-3">

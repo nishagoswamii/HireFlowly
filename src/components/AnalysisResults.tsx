@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
 import { CheckCircle, XCircle, Lightbulb, MessageSquare, Target, BarChart3, Shield, HelpCircle, Download } from 'lucide-react';
-import type { AnalysisResult } from '@/lib/analysis-api';
+import type { EnhancedAnalysisResult } from '@/lib/analysis-api';
+import { RewritePlanner } from './RewritePlanner';
+import { SkillGapExplainer } from './SkillGapExplainer';
 import { exportAnalysisPDF } from '@/lib/pdf-export';
 
 interface AnalysisResultsProps {
-  result: AnalysisResult;
+  result: EnhancedAnalysisResult;
 }
 
 const stagger = {
@@ -33,7 +35,20 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
           Export PDF Report
         </button>
       </motion.div>
-      {/* Semantic Match */}
+
+      {/* Actionable Rewrites */}
+      {result.rewrites && result.rewrites.length > 0 && (
+        <motion.div variants={fadeUp}>
+          <RewritePlanner rewrites={result.rewrites} />
+        </motion.div>
+      )}
+
+      {/* Missing Skills Roadmap */}
+      {result.skillGaps && result.skillGaps.length > 0 && (
+        <motion.div variants={fadeUp}>
+          <SkillGapExplainer gaps={result.skillGaps} />
+        </motion.div>
+      )}
       <motion.div variants={fadeUp}>
         <Section title="Semantic JD Match" icon={<Target className="w-4 h-4 text-primary" />} score={result.semanticMatch.score}>
           <p className="text-[13px] text-foreground/70 mb-5 leading-relaxed">{result.semanticMatch.summary}</p>

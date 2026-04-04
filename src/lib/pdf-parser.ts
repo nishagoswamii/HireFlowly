@@ -1,7 +1,17 @@
 import * as pdfjsLib from 'pdfjs-dist';
+import pdfWorkerSrc from 'pdfjs-dist/build/pdf.worker.min.js?url';
 
-// Use CDN worker to avoid bundling issues
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
+// Use a locally bundled worker to avoid CDN/runtime dependency failures.
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerSrc;
+
+function extractItemText(item: unknown): string {
+  if (typeof item !== 'object' || item === null) {
+    return '';
+  }
+
+  const maybeRecord = item as Record<string, unknown>;
+  return typeof maybeRecord.str === 'string' ? maybeRecord.str : '';
+}
 
 export async function extractTextFromPdf(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
@@ -13,7 +23,8 @@ export async function extractTextFromPdf(file: File): Promise<string> {
     const page = await pdf.getPage(i);
     const textContent = await page.getTextContent();
     const pageText = textContent.items
-      .map((item: any) => item.str)
+      .map((item) => extractItemText(item))
+      .filter((text) => text.length > 0)
       .join(' ');
     textParts.push(pageText);
   }

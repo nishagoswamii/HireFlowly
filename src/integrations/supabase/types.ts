@@ -20,27 +20,39 @@ export type Database = {
           id: string
           job_description: string
           overall_score: number
+          role: string | null
           result: Json
           resume_text: string
+          seniority: string | null
+          track_key: string
           user_id: string
+          version_number: number
         }
         Insert: {
           created_at?: string
           id?: string
           job_description: string
           overall_score: number
+          role?: string | null
           result: Json
           resume_text: string
+          seniority?: string | null
+          track_key: string
           user_id: string
+          version_number?: number
         }
         Update: {
           created_at?: string
           id?: string
           job_description?: string
           overall_score?: number
+          role?: string | null
           result?: Json
           resume_text?: string
+          seniority?: string | null
+          track_key?: string
           user_id?: string
+          version_number?: number
         }
         Relationships: []
       }

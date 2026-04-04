@@ -8,16 +8,20 @@ import { ResumeUploader } from '@/components/ResumeUploader';
 import { JdInput } from '@/components/JdInput';
 import { ScoreSidebar } from '@/components/ScoreSidebar';
 import { AnalysisResults } from '@/components/AnalysisResults';
-import { analyzeResume, type AnalysisResult } from '@/lib/analysis-api';
+import { RoleSenioritySelector } from '@/components/RoleSenioritySelector';
+import { analyzeResumeEnhanced, type EnhancedAnalysisResult } from '@/lib/analysis-api';
 import { saveAnalysis } from '@/lib/save-analysis';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import type { Role, Seniority } from '@/lib/enhanced-analysis';
 
 const Index = () => {
   const [resumeText, setResumeText] = useState('');
   const [jdText, setJdText] = useState('');
+  const [role, setRole] = useState<Role | undefined>(undefined);
+  const [seniority, setSeniority] = useState<Seniority | undefined>(undefined);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [result, setResult] = useState<EnhancedAnalysisResult | null>(null);
   const { user, signOut } = useAuth();
   const { toast } = useToast();
 
@@ -35,9 +39,14 @@ const Index = () => {
     setResult(null);
 
     try {
-      const data = await analyzeResume({ resumeText, jobDescription: jdText });
+      const data = await analyzeResumeEnhanced({
+        resumeText,
+        jobDescription: jdText,
+        role,
+        seniority,
+      });
       setResult(data);
-      await saveAnalysis(resumeText, jdText, data);
+      await saveAnalysis(resumeText, jdText, data, { role, seniority });
     } catch (err) {
       console.error(err);
       toast({
@@ -155,6 +164,16 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8">
           {/* Left column */}
           <div className="space-y-6">
+            {/* Role/Seniority Selector */}
+            {resumeText.trim() && jdText.trim() && (
+              <RoleSenioritySelector
+                role={role}
+                seniority={seniority}
+                onRoleChange={setRole}
+                onSeniorityChange={setSeniority}
+              />
+            )}
+
             {/* Input cards */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
