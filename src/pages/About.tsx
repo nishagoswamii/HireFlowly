@@ -18,9 +18,9 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background noise-texture">
       <div className="fixed inset-0 mesh-gradient pointer-events-none" />
-      <div className="fixed inset-0 grid-pattern opacity-30 pointer-events-none" />
+      <div className="fixed inset-0 grid-pattern opacity-20 pointer-events-none" />
 
-      <header className="relative z-10 border-b border-border/50">
+      <header className="relative z-10 border-b border-border/50 bg-background/70 backdrop-blur-lg">
         <div className="container max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
@@ -39,7 +39,7 @@ export default function About() {
             <ThemeToggle />
             <Link
               to="/"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-secondary/60 border border-border/40 text-xs font-display font-medium text-foreground/70 hover:text-foreground hover:border-primary/20 transition-all"
+              className="ui-outline-button inline-flex items-center gap-2"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Back
@@ -54,7 +54,7 @@ export default function About() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="w-20 h-20 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 rounded-3xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-6">
             <span className="text-3xl font-display font-bold text-gradient">
               {developer.name.charAt(0)}
             </span>
@@ -79,7 +79,7 @@ export default function About() {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="premium-card rounded-2xl p-5 flex items-center gap-4 group hover:border-primary/20 transition-all"
+              className="premium-card rounded-3xl p-5 flex items-center gap-4 group hover:border-primary/20 transition-all"
             >
               <div className="w-10 h-10 rounded-xl bg-primary/[0.08] flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
                 <link.icon className="w-5 h-5 text-primary" />

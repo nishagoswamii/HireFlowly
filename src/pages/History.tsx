@@ -271,9 +271,9 @@ export default function History() {
   return (
     <div className="min-h-screen bg-background noise-texture">
       <div className="fixed inset-0 mesh-gradient pointer-events-none" />
-      <div className="fixed inset-0 grid-pattern opacity-30 pointer-events-none" />
+      <div className="fixed inset-0 grid-pattern opacity-20 pointer-events-none" />
 
-      <header className="relative z-10 border-b border-border/50">
+      <header className="relative z-10 border-b border-border/50 bg-background/70 backdrop-blur-lg">
         <div className="container max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
@@ -290,7 +290,7 @@ export default function History() {
           </div>
           <Link
             to="/"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-secondary/60 border border-border/40 text-xs font-display font-medium text-foreground/70 hover:text-foreground hover:border-primary/20 transition-all"
+            className="ui-outline-button inline-flex items-center gap-2"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             New Analysis
@@ -303,7 +303,7 @@ export default function History() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-20 premium-card rounded-2xl"
+            className="premium-card rounded-3xl py-20 text-center"
           >
             <Clock className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
             <p className="text-sm text-muted-foreground/80 font-display mb-2">Sign in to view your analyses</p>
@@ -345,7 +345,7 @@ export default function History() {
               <motion.section
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="premium-card rounded-2xl p-5"
+                className="premium-card rounded-3xl p-5"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
                   <div>

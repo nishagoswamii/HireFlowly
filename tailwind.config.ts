@@ -15,20 +15,16 @@ export default {
   	extend: {
   		fontFamily: {
   			sans: [
-  				'Poppins',
+					'Plus Jakarta Sans',
   				'ui-sans-serif',
   				'system-ui',
   				'-apple-system',
   				'BlinkMacSystemFont',
   				'Segoe UI',
-  				'Roboto',
-  				'Helvetica Neue',
-  				'Arial',
-  				'Noto Sans',
   				'sans-serif'
   			],
   			mono: [
-  				'JetBrains Mono',
+					'IBM Plex Mono',
   				'ui-monospace',
   				'SFMono-Regular',
   				'Menlo',
@@ -39,17 +35,16 @@ export default {
   				'monospace'
   			],
   			display: [
-  				'Space Grotesk',
-  				'sans-serif'
+					'Sora',
+					'Plus Jakarta Sans',
+					'ui-sans-serif',
+					'sans-serif'
   			],
   			serif: [
-  				'Merriweather',
-  				'ui-serif',
-  				'Georgia',
-  				'Cambria',
-  				'Times New Roman',
-  				'Times',
-  				'serif'
+					'Sora',
+					'Plus Jakarta Sans',
+					'ui-sans-serif',
+					'sans-serif'
   			]
   		},
   		colors: {

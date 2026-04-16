@@ -31,7 +31,7 @@ export function RewritePlanner({ rewrites }: RewritePlannerProps) {
       variants={staggerContainer}
       initial="hidden"
       animate="show"
-      className="premium-card rounded-2xl p-6 border border-primary/15 bg-gradient-to-br from-primary/[0.02] to-transparent"
+      className="premium-card rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/[0.06] via-transparent to-transparent p-6"
     >
       <div className="flex items-start justify-between mb-5">
         <div>
@@ -39,7 +39,7 @@ export function RewritePlanner({ rewrites }: RewritePlannerProps) {
             <div className="w-8 h-8 rounded-xl bg-primary/15 flex items-center justify-center">
               <Zap className="w-4 h-4 text-primary" />
             </div>
-            <h3 className="text-sm font-display font-semibold text-foreground">
+            <h3 className="text-[1.2rem] font-display font-semibold leading-none text-foreground">
               Actionable Improvements
             </h3>
           </div>
@@ -60,7 +60,7 @@ export function RewritePlanner({ rewrites }: RewritePlannerProps) {
           <motion.div
             key={i}
             variants={itemVariant}
-            className="group p-4 rounded-xl bg-secondary/50 border border-border/40 hover:border-primary/20 transition-all"
+            className="group rounded-2xl border border-border/45 bg-secondary/40 p-4 transition-all hover:border-primary/25"
           >
             {/* Original bullet */}
             <div className="mb-3 pb-3 border-b border-border/30">
@@ -96,7 +96,7 @@ export function RewritePlanner({ rewrites }: RewritePlannerProps) {
               onClick={() => {
                 navigator.clipboard.writeText(rewrite.suggestedRewrite);
               }}
-              className="mt-2 text-[10px] px-2 py-1 rounded border border-primary/20 text-primary/60 hover:bg-primary/5 transition-colors"
+              className="mt-2 rounded-lg border border-primary/28 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.1em] text-primary/70 transition-colors hover:bg-primary/10"
             >
               Copy
             </button>

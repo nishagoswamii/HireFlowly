@@ -2,7 +2,9 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { z } from "https://deno.land/x/zod@v3.23.8/mod.ts";
 
 const DEFAULT_ALLOWED_ORIGINS = [
-  "https://hireflowly.lovable.app",
+  "https://hireflowly.nishagoswami.com",
+  "https://nishagoswami.com",
+  "https://www.nishagoswami.com",
   "http://localhost:5173",
 ];
 
@@ -18,6 +20,7 @@ const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const AI_TIMEOUT_MS = 30_000;
 const AI_MAX_ATTEMPTS = 3;
 const AI_RETRYABLE_STATUS = new Set([408, 429, 500, 502, 503, 504]);
+const AI_GATEWAY_URL = Deno.env.get("AI_GATEWAY_URL");
 
 const corsHeadersBase = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
@@ -136,6 +139,7 @@ function backoffMs(attempt: number): number {
 async function callAiGatewayWithRetry(
   payload: unknown,
   apiKey: string,
+  aiGatewayUrl: string,
   correlationId: string,
 ): Promise<{ ok: true; data: unknown } | { ok: false; status: number; text: string }> {
   let lastStatus = 502;
@@ -146,7 +150,7 @@ async function callAiGatewayWithRetry(
     const timeout = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
 
     try {
-      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      const response = await fetch(aiGatewayUrl, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,
@@ -242,9 +246,15 @@ serve(async (req) => {
 
     const { resumeText, jobDescription, role, seniority } = parsed.data;
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      console.error("[config] Missing LOVABLE_API_KEY", { correlationId });
+    const AI_GATEWAY_API_KEY = Deno.env.get("AI_GATEWAY_API_KEY");
+    if (!AI_GATEWAY_API_KEY) {
+      console.error("[config] Missing AI_GATEWAY_API_KEY", { correlationId });
+      return errorResponse(500, "config_missing", "Service misconfigured", headers);
+    }
+
+    const aiGatewayUrl = AI_GATEWAY_URL;
+    if (!aiGatewayUrl) {
+      console.error("[config] Missing AI_GATEWAY_URL", { correlationId });
       return errorResponse(500, "config_missing", "Service misconfigured", headers);
     }
 
@@ -384,7 +394,7 @@ Return ONLY valid JSON. Include rewrites, skillGaps, and confidenceBands only if
       tool_choice: { type: "function", function: { name: "return_analysis" } },
     };
 
-    const gatewayResult = await callAiGatewayWithRetry(aiPayload, LOVABLE_API_KEY, correlationId);
+    const gatewayResult = await callAiGatewayWithRetry(aiPayload, AI_GATEWAY_API_KEY, aiGatewayUrl, correlationId);
     if (!gatewayResult.ok) {
       console.error("[ai_gateway_error]", { status: gatewayResult.status, text: gatewayResult.text, correlationId });
       if (gatewayResult.status === 429) {

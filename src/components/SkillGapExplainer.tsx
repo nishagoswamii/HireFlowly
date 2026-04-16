@@ -40,7 +40,7 @@ export function SkillGapExplainer({ gaps }: SkillGapExplainerProps) {
             <motion.div
               key={`${label}-${i}`}
               variants={itemVariant}
-              className="p-3 rounded-lg bg-secondary/30 border border-border/40 hover:border-primary/15 transition-colors group"
+              className="group rounded-2xl border border-border/45 bg-secondary/35 p-3 transition-colors hover:border-primary/20"
             >
               <div className="flex items-start justify-between gap-2 mb-2">
                 <span className="text-[12px] font-semibold text-foreground/80">
@@ -83,13 +83,13 @@ export function SkillGapExplainer({ gaps }: SkillGapExplainerProps) {
       variants={staggerContainer}
       initial="hidden"
       animate="show"
-      className="premium-card rounded-2xl p-6"
+      className="premium-card rounded-3xl p-6"
     >
       <div className="flex items-center gap-3 mb-5">
         <div className="w-8 h-8 rounded-xl bg-primary/[0.08] flex items-center justify-center">
           <Plus className="w-4 h-4 text-primary" />
         </div>
-        <h3 className="text-sm font-display font-semibold text-foreground/90">
+        <h3 className="text-[1.2rem] font-display font-semibold leading-none text-foreground/92">
           Missing Skills Roadmap
         </h3>
       </div>

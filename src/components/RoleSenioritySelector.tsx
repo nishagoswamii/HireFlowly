@@ -25,18 +25,18 @@ export function RoleSenioritySelector({
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="premium-card rounded-2xl p-4 mb-5"
+      className="premium-card mb-5 rounded-3xl p-5"
     >
-      <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground/60 mb-3">
+      <p className="mb-3 text-[10px] font-mono uppercase tracking-[0.22em] text-muted-foreground/70">
         Tune Analysis (Optional)
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div>
-          <label className="text-[11px] font-semibold text-foreground/70 block mb-1.5">
+          <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/72">
             Role
           </label>
           <Select value={role} onValueChange={onRoleChange}>
-            <SelectTrigger className="h-8 text-xs">
+            <SelectTrigger className="h-9 border-border/70 bg-secondary/30 text-xs">
               <SelectValue placeholder="Select role..." />
             </SelectTrigger>
             <SelectContent>
@@ -49,11 +49,11 @@ export function RoleSenioritySelector({
           </Select>
         </div>
         <div>
-          <label className="text-[11px] font-semibold text-foreground/70 block mb-1.5">
+          <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/72">
             Seniority
           </label>
           <Select value={seniority} onValueChange={onSeniorityChange}>
-            <SelectTrigger className="h-8 text-xs">
+            <SelectTrigger className="h-9 border-border/70 bg-secondary/30 text-xs">
               <SelectValue placeholder="Select level..." />
             </SelectTrigger>
             <SelectContent>

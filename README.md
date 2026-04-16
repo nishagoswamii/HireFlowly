@@ -1,73 +1,90 @@
-# Welcome to your Lovable project
+# HireFlowly
 
-## Project info
+AI-powered resume analyzer that compares resumes against job descriptions, scores impact/authenticity, and suggests improvements.
 
-**URL**: https://hireflowly.lovable.app
+## Live App
 
-## How can I edit this code?
+- Primary: https://hire-flowly.vercel.app
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- Vite + React + TypeScript
+- Tailwind CSS + shadcn/ui
+- Supabase (Auth + Edge Functions)
+- Vitest (tests)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Local Development
 
-Changes made via Lovable will be committed automatically to this repo.
+### 1. Install dependencies
 
-**Use your preferred IDE**
+```bash
+npm install
+```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 2. Configure frontend environment
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Create `.env.local` in the project root:
 
-Follow these steps:
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### 3. Run the app
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+App runs on `http://localhost:8080` (see Vite config).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Scripts
 
-**Use GitHub Codespaces**
+- `npm run dev` - start local dev server
+- `npm run build` - build production bundle
+- `npm run preview` - preview production build locally
+- `npm run test` - run tests once
+- `npm run test:watch` - run tests in watch mode
+- `npm run lint` - run lint checks
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Deploy (Vercel)
 
-## What technologies are used for this project?
+1. Import this repo into Vercel.
+2. Keep framework preset as `Vite`.
+3. Add frontend env vars in Vercel project settings:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_PUBLISHABLE_KEY`
+4. Deploy.
 
-This project is built with:
+SPA routing rewrite is already configured in [vercel.json](vercel.json).
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Supabase Edge Function Setup
 
-## How can I deploy this project?
+Function path: [supabase/functions/analyze-resume/index.ts](supabase/functions/analyze-resume/index.ts)
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Required function secrets:
 
-## Can I connect a custom domain to my Lovable project?
+- `AI_GATEWAY_URL`
+- `AI_GATEWAY_API_KEY`
 
-Yes, you can!
+Optional function secret:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- `ALLOWED_ORIGINS` (comma-separated list of allowed browser origins)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Deploy the function
+
+```bash
+npx supabase functions deploy analyze-resume
+```
+
+### Set secrets (example)
+
+```bash
+npx supabase functions secrets set AI_GATEWAY_URL="https://your-ai-gateway-url" AI_GATEWAY_API_KEY="your_key" ALLOWED_ORIGINS="https://hire-flowly.vercel.app,http://localhost:5173"
+```
+
+## Notes
+
+- Google OAuth in the app uses native Supabase auth flow.
+- Vercel SPA rewrites are handled in [vercel.json](vercel.json).
+

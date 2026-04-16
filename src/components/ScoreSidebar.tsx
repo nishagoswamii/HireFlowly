@@ -12,11 +12,11 @@ interface ScoreSidebarProps {
 export function ScoreSidebar({ result, isAnalyzing }: ScoreSidebarProps) {
   if (!result && !isAnalyzing) {
     return (
-      <div className="glass-panel rounded-2xl p-8 h-80 flex flex-col items-center justify-center text-center">
-        <div className="w-14 h-14 rounded-2xl bg-secondary/60 flex items-center justify-center mb-5">
+      <div className="glass-panel flex h-80 flex-col items-center justify-center rounded-3xl p-8 text-center">
+        <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary/60">
           <Activity className="w-6 h-6 text-muted-foreground/30" />
         </div>
-        <p className="text-xs text-muted-foreground/50 leading-relaxed max-w-[200px]">
+        <p className="max-w-[210px] text-[12px] leading-relaxed text-muted-foreground/60">
           Upload a resume and paste a JD to begin analysis
         </p>
       </div>
@@ -25,7 +25,7 @@ export function ScoreSidebar({ result, isAnalyzing }: ScoreSidebarProps) {
 
   if (isAnalyzing) {
     return (
-      <div className="glass-panel-glow rounded-2xl p-8 h-80 flex flex-col items-center justify-center">
+      <div className="glass-panel-glow flex h-80 flex-col items-center justify-center rounded-3xl p-8">
         <div className="relative w-16 h-16 mb-5">
           <div className="absolute inset-0 rounded-full border-2 border-primary/10" />
           <motion.div
@@ -39,10 +39,10 @@ export function ScoreSidebar({ result, isAnalyzing }: ScoreSidebarProps) {
             transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
           />
         </div>
-        <p className="text-xs font-mono text-primary animate-pulse-glow tracking-widest">
+        <p className="animate-pulse-glow text-xs font-mono uppercase tracking-[0.24em] text-primary">
           ANALYZING
         </p>
-        <p className="text-[10px] text-muted-foreground/40 mt-2 font-mono">
+        <p className="mt-2 text-[10px] font-mono uppercase tracking-[0.1em] text-muted-foreground/55">
           Processing semantic signals...
         </p>
       </div>
@@ -56,13 +56,13 @@ export function ScoreSidebar({ result, isAnalyzing }: ScoreSidebarProps) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="glass-panel-glow rounded-2xl p-6 space-y-6"
+      className="glass-panel-glow space-y-6 rounded-3xl p-6"
     >
       {/* Overall */}
       <div className="text-center pb-1">
         <p className="section-label mb-4">Overall Score</p>
         <ScoreRing score={result.overallScore} label="" size={110} />
-        <p className="text-[11px] text-muted-foreground/50 mt-3 font-mono">
+        <p className="mt-3 text-[11px] font-mono uppercase tracking-[0.12em] text-muted-foreground/65">
           {result.overallScore >= 80 ? 'Excellent' : result.overallScore >= 60 ? 'Good' : result.overallScore >= 40 ? 'Needs Work' : 'Weak'}
         </p>
       </div>
@@ -128,7 +128,7 @@ function StatRow({ icon, label, value, variant }: { icon: React.ReactNode; label
   return (
     <div className="flex items-center gap-2.5 group">
       {icon}
-      <span className="text-[11px] text-muted-foreground/60 flex-1">{label}</span>
+      <span className="flex-1 text-[11px] text-muted-foreground/68">{label}</span>
       <span className={`text-[11px] font-mono font-bold ${variant === 'warning' ? 'text-score-warning' : 'text-foreground/80'}`}>
         {value}
       </span>

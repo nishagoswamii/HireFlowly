@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { Upload, FileText, X, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { extractTextFromPdf } from '@/lib/pdf-parser';
+import { BorderTrail } from '@/components/motion-primitives/border-trail';
 
 interface ResumeUploaderProps {
   onTextExtracted: (text: string) => void;
@@ -52,12 +53,12 @@ export function ResumeUploader({ onTextExtracted, extractedText }: ResumeUploade
   return (
     <div className="space-y-3 h-full flex flex-col">
       <div className="flex items-center gap-2">
-        <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center">
+        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-primary/12">
           <FileText className="w-3 h-3 text-primary" />
         </div>
         <span className="section-label">Resume</span>
         {extractedText && (
-          <span className="ml-auto flex items-center gap-1 text-[10px] font-mono text-score-excellent">
+          <span className="ml-auto flex items-center gap-1 text-[10px] font-mono uppercase tracking-[0.12em] text-score-excellent">
             <CheckCircle2 className="w-3 h-3" /> Loaded
           </span>
         )}
@@ -75,32 +76,59 @@ export function ResumeUploader({ onTextExtracted, extractedText }: ResumeUploade
             <div
               {...getRootProps()}
               className={`
-                relative rounded-xl p-6 text-center cursor-pointer flex-1 flex flex-col items-center justify-center
+                relative flex flex-1 cursor-pointer flex-col items-center justify-center rounded-2xl p-6 text-center
                 transition-all duration-300 group
-                border border-dashed
+                border
                 ${isDragActive
-                  ? 'border-primary bg-primary/5 shadow-[inset_0_0_30px_hsl(var(--primary)/0.05)]'
-                  : 'border-border/60 hover:border-primary/30 hover:bg-primary/[0.02]'
+                  ? 'border-solid border-primary/95 bg-primary/10 shadow-[inset_0_0_36px_hsl(var(--primary)/0.26),0_0_26px_-10px_hsl(var(--primary)/0.95)]'
+                  : 'border-dashed border-border/70 bg-secondary/20 hover:border-primary/35 hover:bg-primary/6'
                 }
-                ${isProcessing ? 'pointer-events-none opacity-60' : ''}
+                ${isProcessing ? 'pointer-events-none opacity-80' : ''}
               `}
             >
+              <BorderTrail
+                size={84}
+                className={`bg-[linear-gradient(135deg,hsl(var(--primary)),hsl(var(--chart-3)),hsl(var(--gradient-mesh-2)))] blur-[1px] transition-opacity duration-300 ${isDragActive || isProcessing ? 'opacity-100' : 'opacity-55'}`}
+                transition={{ duration: 5.2, repeat: Infinity, ease: 'linear' }}
+              />
               <input {...getInputProps()} />
-              <div className="flex flex-col items-center gap-3">
-                <div className="relative">
-                  <div className="w-11 h-11 rounded-xl bg-secondary/80 flex items-center justify-center transition-transform group-hover:scale-105">
-                    <Upload className="w-4.5 h-4.5 text-muted-foreground transition-colors group-hover:text-primary" />
+              {isProcessing ? (
+                <div className="relative z-10 flex flex-col items-center gap-3">
+                  <div className="relative flex h-28 w-20 items-center justify-center overflow-hidden rounded-xl border border-primary/45 bg-secondary/55">
+                    <FileText className="h-9 w-9 text-primary/85" />
+                    <motion.div
+                      className="absolute left-1.5 right-1.5 h-[2px] rounded-full bg-primary shadow-[0_0_16px_hsl(var(--primary)/0.95)]"
+                      initial={{ y: -38 }}
+                      animate={{ y: 38 }}
+                      transition={{ duration: 1.1, repeat: Infinity, ease: 'linear' }}
+                    />
+                  </div>
+                  <div>
+                    <p className="font-display text-lg leading-none text-foreground/88">
+                      Scanning document...
+                    </p>
+                    <p className="mt-1 text-[11px] font-mono uppercase tracking-[0.16em] text-primary/80">
+                      Parsing resume data stream
+                    </p>
                   </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-foreground/80">
-                    {isProcessing ? 'Processing...' : 'Drop PDF here'}
-                  </p>
-                  <p className="text-[11px] text-muted-foreground/60 mt-1">
-                    PDF or TXT • Max 10MB
-                  </p>
+              ) : (
+                <div className="relative z-10 flex flex-col items-center gap-3">
+                  <div className="relative">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary/70 transition-transform group-hover:scale-105">
+                      <Upload className="w-4.5 h-4.5 text-muted-foreground transition-colors group-hover:text-primary" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="font-display text-lg leading-none text-foreground/85">
+                      Drop PDF here
+                    </p>
+                    <p className="mt-1 text-[11px] font-mono uppercase tracking-[0.16em] text-muted-foreground/70">
+                      PDF or TXT • Max 10MB
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {error && <p className="text-xs text-destructive mt-2">{error}</p>}
@@ -108,7 +136,7 @@ export function ResumeUploader({ onTextExtracted, extractedText }: ResumeUploade
             <div className="mt-3">
               <div className="flex items-center gap-3 mb-2">
                 <div className="h-px flex-1 bg-border/40" />
-                <span className="text-[10px] text-muted-foreground/40 font-mono">OR PASTE</span>
+                <span className="text-[10px] text-muted-foreground/55 font-mono tracking-[0.18em]">OR PASTE</span>
                 <div className="h-px flex-1 bg-border/40" />
               </div>
               <textarea
@@ -129,18 +157,18 @@ export function ResumeUploader({ onTextExtracted, extractedText }: ResumeUploade
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="flex-1 rounded-xl bg-secondary/40 border border-border/50 p-4"
+            className="flex-1 rounded-2xl border border-border/70 bg-secondary/35 p-4"
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/12">
                   <FileText className="w-3.5 h-3.5 text-primary" />
                 </div>
                 <span className="text-xs font-mono text-foreground/80 truncate max-w-[160px]">{fileName}</span>
               </div>
               <button
                 onClick={handleClear}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
+                className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-all hover:bg-secondary hover:text-foreground"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Terminal, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { lovable } from '@/integrations/lovable/index';
 import { useToast } from '@/hooks/use-toast';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -14,6 +13,7 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
+  const appRedirectUrl = new URL(import.meta.env.BASE_URL, window.location.origin).toString();
 
   if (loading) return null;
   if (user) return <Navigate to="/" replace />;
@@ -30,7 +30,7 @@ export default function Auth() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin },
+          options: { emailRedirectTo: appRedirectUrl },
         });
         if (error) throw error;
         toast({ title: 'Account created!', description: 'You are now signed in.' });
@@ -43,48 +43,52 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-background noise-texture flex items-center justify-center">
+    <div className="relative flex min-h-screen items-center justify-center bg-background noise-texture px-4">
       <div className="fixed inset-0 mesh-gradient pointer-events-none" />
-      <div className="fixed inset-0 grid-pattern opacity-30 pointer-events-none" />
+      <div className="fixed inset-0 grid-pattern opacity-20 pointer-events-none" />
+      <div className="pointer-events-none fixed -top-24 left-1/2 h-[26rem] w-[26rem] -translate-x-1/2 rounded-full bg-primary/20 blur-[120px]" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 w-full max-w-sm mx-4"
+        className="relative z-10 w-full max-w-md"
       >
-        <div className="flex items-center gap-3 justify-center mb-8">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-            <Terminal className="w-5 h-5 text-primary" />
+        <div className="mb-8 flex items-center justify-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-primary/30 bg-primary/10">
+            <Terminal className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-lg font-display font-bold text-foreground tracking-tight">
+            <h1 className="text-[1.6rem] font-display font-semibold leading-none text-foreground">
               Hire<span className="text-gradient">Flowly</span>
             </h1>
+            <p className="mt-1 text-[10px] font-mono uppercase tracking-[0.24em] text-muted-foreground/80">
+              Secure account access
+            </p>
           </div>
         </div>
 
-        <div className="premium-card rounded-2xl p-6">
-          <h2 className="text-sm font-display font-semibold text-foreground/90 mb-1 text-center">
+        <div className="premium-card rounded-3xl p-6 sm:p-8">
+          <h2 className="mb-1 text-center text-[1.75rem] font-display font-semibold leading-none text-foreground/95">
             {isLogin ? 'Welcome back' : 'Create account'}
           </h2>
-          <p className="text-[11px] text-muted-foreground text-center mb-6">
+          <p className="mb-6 text-center text-[12px] text-muted-foreground/90">
             {isLogin ? 'Sign in to access your analysis history' : 'Sign up to save your analyses'}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
+              <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60" />
               <input
                 type="email"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-secondary/60 border border-border/40 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/40 transition-colors"
+                className="w-full rounded-xl border border-border/65 bg-secondary/35 py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-none"
               />
             </div>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
+              <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60" />
               <input
                 type="password"
                 placeholder="Password"
@@ -92,20 +96,20 @@ export default function Auth() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-secondary/60 border border-border/40 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/40 transition-colors"
+                className="w-full rounded-xl border border-border/65 bg-secondary/35 py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-none"
               />
             </div>
             <button
               type="submit"
               disabled={submitting}
-              className="group w-full h-11 rounded-xl bg-primary text-primary-foreground font-display font-semibold text-sm flex items-center justify-center gap-2 hover:shadow-[0_0_30px_-5px_hsl(var(--primary)/0.4)] transition-all disabled:opacity-50"
+              className="ui-primary-button group flex h-12 w-full items-center justify-center gap-2 rounded-xl text-[11px] uppercase tracking-[0.16em] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitting ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <>
                   {isLogin ? 'Sign In' : 'Create Account'}
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </>
               )}
             </button>
@@ -116,20 +120,23 @@ export default function Auth() {
               <div className="w-full border-t border-border/30" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-card px-3 text-[10px] font-mono text-muted-foreground/50 uppercase">or</span>
+              <span className="bg-card px-3 text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground/65">or</span>
             </div>
           </div>
 
           <button
             onClick={async () => {
-              const { error } = await lovable.auth.signInWithOAuth("google", {
-                redirect_uri: window.location.origin,
+              const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                  redirectTo: appRedirectUrl,
+                },
               });
               if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
             }}
-            className="w-full h-11 rounded-xl bg-secondary/60 border border-border/40 font-display font-medium text-sm text-foreground/80 flex items-center justify-center gap-3 hover:bg-secondary hover:border-border/60 transition-all"
+            className="flex h-11 w-full items-center justify-center gap-3 rounded-xl border border-border/65 bg-secondary/45 text-sm font-medium text-foreground/88 transition-all hover:border-primary/35 hover:bg-secondary/70"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24">
+            <svg className="h-4 w-4" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
               <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
@@ -138,9 +145,9 @@ export default function Auth() {
             Continue with Google
           </button>
 
-          <p className="text-[11px] text-muted-foreground text-center mt-5">
+          <p className="mt-5 text-center text-[11px] text-muted-foreground/85">
             {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-            <button onClick={() => setIsLogin(!isLogin)} className="text-primary hover:underline font-medium">
+            <button onClick={() => setIsLogin(!isLogin)} className="font-semibold text-primary hover:underline">
               {isLogin ? 'Sign up' : 'Sign in'}
             </button>
           </p>
