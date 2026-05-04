@@ -139,16 +139,6 @@ const Index = () => {
                 History
               </Link>
             )}
-            <div className="ui-chip hidden sm:inline-flex">
-              <motion.div
-                className="h-1.5 w-1.5 rounded-full bg-score-excellent"
-                animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-primary/90">
-                Live Analysis
-              </span>
-            </div>
             {user ? (
               <button
                 onClick={signOut}
@@ -316,15 +306,11 @@ const Index = () => {
       <footer className="relative z-10 border-t border-border/40 bg-background/60">
         <div className="container mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-6 sm:flex-row">
           <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground/60">
-            Crafted by{' '}
+            Developed by{' '}
             <Link to="/about" className="text-primary/75 transition-colors hover:text-primary">
               Nisha Goswami
             </Link>
           </span>
-          <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground/60">
-            <div className="h-1 w-1 rounded-full bg-score-excellent" />
-            System Online
-          </div>
         </div>
       </footer>
     </div>
